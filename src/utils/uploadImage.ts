@@ -8,7 +8,7 @@ const handleFileChange = (
     setError(false);
     const selectedFile = event.target.files?.[0];
   
-    if (event.target.files.length !== 1 || !selectedFile) {
+    if (!selectedFile) {
       setError(true);
       setSkeleton(false);
     } else if (!selectedFile.type.includes('image')) {
