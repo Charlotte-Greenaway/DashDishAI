@@ -4,7 +4,7 @@ import React from "react";
 import { useRef, useState} from "react";
 
 const InputText = ({ setIngs, ings }: any) => {
-  const [inputVal,setInputVal]= useState(null)
+  const [inputVal,setInputVal]= useState<any>(null)
   const inputRef:any = useRef(null);
   const handleChange = () => {
     setInputVal(inputRef.current.value)
