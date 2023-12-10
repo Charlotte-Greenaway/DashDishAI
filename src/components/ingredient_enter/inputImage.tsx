@@ -15,9 +15,7 @@ import axios from "axios";
 const InputImage = ({ setIngs, ings, setAnalysing }: any) => {
   const analyseImage = useRef(null);
   const [image, setImage] = useState<null | string | ArrayBuffer>(null);
-  const [selected, setSelected] = useState<
-    ChangeEvent<HTMLInputElement> | undefined
-  >(undefined);
+  const [selected, setSelected] = useState<any>(undefined);
   const [skeleton, setSkeleton] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
