@@ -54,17 +54,17 @@ const NavBar: React.FC = () => {
 
         <NavbarContent className={`hidden sm:flex gap-4 ${!path.includes("/sign") ? "" : "invisible"}`} justify="center" >
           <NavbarItem isActive={path==="/" ? true : false}>
-            <Link  href="#" aria-current={path==="/savedrecipes" ? "page" : ""}>
+            <Link  href="#" >
               Home
             </Link>
           </NavbarItem>
           <NavbarItem isActive={path==="/savedrecipes" ? true : false}>
-            <Link href="#"  aria-current={path==="/savedrecipes" ? "page" : ""}>
+            <Link href="#" >
               Saved Recipes
             </Link>
           </NavbarItem>
           <NavbarItem isActive={path==="/search" ? true : false}>
-            <Link  href="#" aria-current={path==="/savedrecipes" ? "page" : ""}>
+            <Link  href="#" >
               Search
             </Link>
           </NavbarItem>
