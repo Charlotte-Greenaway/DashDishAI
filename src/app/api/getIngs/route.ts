@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
               {
                 role: "user",
                 content: [
-                  { type: "text", text: "What foods are in this image, please reply with just a comma seperated list, if there aren't any, please return blank" },
+                  { type: "text", text: "What foods are in this image, please reply with just a comma seperated list, if there aren't any or you can't help with this request, please return blank nothing else" },
                   {
                     type: "image_url",
                     image_url: {
