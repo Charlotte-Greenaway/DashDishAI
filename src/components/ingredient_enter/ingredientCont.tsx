@@ -6,7 +6,7 @@ import ResultsIngs from "@/components/ingredient_results/res";
 import axios from "axios";
 
 const IngredientCont = () => {
-  const [ings, setIngs] = useState([]);
+  const [ings, setIngs] = useState([""]);
   const [recipes, setRecipes] = useState([]);
   const [analysing, setAnalysing] = useState(true);
   const [recipeanaly, setRecipeanaly] = useState(false);
@@ -20,14 +20,17 @@ const IngredientCont = () => {
     }
   };
   const dbIngs = async () => {
-    const response = await axios.get("./api/getDbIngs");
+    const response = await axios.post("./api/getDbIngs");
+    console.log(response.data.message)
     setIngs(response.data.message);
     setAnalysing(false)
   };
   useEffect(() => {
     if(!initialset){
-      dbIngs();
-      setInitial(true);
+        dbIngs();
+        setInitial(true);
+        console.log("ings set")
+      
     }
   }, []);
   useEffect(() => {

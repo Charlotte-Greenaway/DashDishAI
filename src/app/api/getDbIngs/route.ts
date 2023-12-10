@@ -1,18 +1,23 @@
 import { NextResponse, NextRequest } from "next/server";
 require('dotenv').config();
 import { connectToDb } from "@/database_actions/dbConfig";
-import { handleNewUserReg } from "@/database_actions/users";
+import {currentUser} from '@clerk/nextjs/server';
+import UserModel from "@/models/user-model";
+connectToDb();
 
- connectToDb();
-
-
-export async function GET() {
+export async function POST() {
     try{
-        const user = await handleNewUserReg()
-
-        return NextResponse.json({ message: user?.savedIngredients, status: 200 });
+        const loggedInUser = await currentUser();
+        //check if user exists in mongo db
+        const userExists = await UserModel.findOne({clerkUserId:loggedInUser?.id});
+        if(userExists){
+            return NextResponse.json({ message: userExists?.savedIngredients, status: 200 });
+        }else{
+            return NextResponse.json({ message: [], status: 200 });
+        }
+                
     } catch (error) {
         console.log(error);
-        return NextResponse.json({ message: "An error occurred while getting ingredients", status: 500 });
+        return NextResponse.json({ message:["error"], status: 500 });
     }
 }

@@ -47,6 +47,9 @@ const Results: React.FC<MyComponentProps> = ({ ings, analysing, setIngs ,setReci
     }
     
   }
+  useEffect(()=>{
+    setInterval(()=>{console.log(ings)},3000)
+  })
   
   return (
     <>
@@ -63,6 +66,7 @@ const Results: React.FC<MyComponentProps> = ({ ings, analysing, setIngs ,setReci
         <CardBody className="mx-auto">
           <ScrollShadow className={`w-full grid grid-cols-2 place-items-center mx-auto fitcont ${analysing ? 'pointer-events-none opacity-50' : ''}`}>
             {
+              ings.length>0 &&
               ings.map(
                 (item: any, index: number) =>
                   !(item == "") && (
