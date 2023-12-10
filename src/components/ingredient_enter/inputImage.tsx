@@ -14,7 +14,7 @@ import axios from "axios";
 
 const InputImage = ({ setIngs, ings, setAnalysing }: any) => {
   const analyseImage = useRef(null);
-  const [image, setImage] = useState<null | string | ArrayBuffer>(null);
+  const [image, setImage] = useState<any>(null);
   const [selected, setSelected] = useState<any>(undefined);
   const [skeleton, setSkeleton] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -143,7 +143,6 @@ const InputImage = ({ setIngs, ings, setAnalysing }: any) => {
                       src={image}
                       alt="Uploaded"
                       ref={analyseImage}
-                      capture="camera"
                       style={{ margin: "auto", maxHeight: 30 + "dvh" }}
                     />
                   </div>
