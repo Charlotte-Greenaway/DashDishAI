@@ -34,7 +34,7 @@ const ResultsIngs: React.FC<MyComponentProps> = ({ recipes, recipeanaly }) => {
           !recipeanaly &&
           recipes.map((item) => (
             <>
-            <a href={`/recipe?id=${item._id}&missingIngs=${item.missingIngs}`}>
+            <a className="py-4 fitcont mx-auto my-3" href={`/recipe?id=${item._id}&missingIngs=${item.missingIngs}`}>
               <Card className="py-4 fitcont mx-auto my-3" key={item.recipeId}>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start mx-auto">
                   <p className="text-tiny uppercase font-bold mx-auto m-w-[300px]">
