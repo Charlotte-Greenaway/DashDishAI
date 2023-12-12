@@ -83,7 +83,7 @@ export default function RecipePage() {
       {recipe && (
         <>
           <div className="flex flex-col md:flex-row">
-            <div className="w-screen md:w-1/2 flex px-10 justify-center flex-col max-h-screen">
+            <div className="w-screen md:w-1/2 flex px-10 py-10 md:py-0 justify-center flex-col max-h-screen">
               <h1 className="text-4xl font-bold text-center">
                 {recipe.message.recipeTitle}
               </h1>
