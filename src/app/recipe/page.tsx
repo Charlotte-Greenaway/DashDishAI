@@ -13,9 +13,22 @@ import {
   useDisclosure
 } from "@nextui-org/react";
 
-export default function Home() {
+interface Recipe {
+  message: {
+    _id: string;
+    recipeTitle: string;
+    summary: string;
+    rating: number;
+    numOfRatings: number;
+    image: {
+      data: string;
+    };
+  };
+}
+
+export default function RecipePage() {
   const {isOpen, onOpen, onClose} = useDisclosure();
-  const [recipe, setRecipe] = useState<Object>({});
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [hasRated, setRated] = useState<boolean>(false);
   const [loading, isLoading] = useState<Boolean>(true);
@@ -32,7 +45,7 @@ export default function Home() {
   };
 
   const submitRating = async (index: number) => {
-    if (Object.keys(recipe).length > 1 && !hasRated) {
+    if (recipe && !hasRated) {
       const userRating = index + 1;
       const response = await axios.post("/api/setRating", {
         id: recipe.message._id,
@@ -67,7 +80,7 @@ export default function Home() {
 
   return (
     <>
-      {Object.keys(recipe).length > 1 && (
+      {recipe && (
         <>
           <div className="flex flex-col md:flex-row">
             <div className="w-screen md:w-1/2 flex px-10 justify-center flex-col max-h-screen">
