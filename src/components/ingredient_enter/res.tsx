@@ -47,10 +47,7 @@ const Results: React.FC<MyComponentProps> = ({ ings, analysing, setIngs ,setReci
     }
     
   }
-  useEffect(()=>{
-    setInterval(()=>{console.log(ings)},3000)
-  })
-  
+ 
   return (
     <>
       <Card

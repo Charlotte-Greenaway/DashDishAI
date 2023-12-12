@@ -54,7 +54,7 @@ const NavBar: React.FC = () => {
 
         <NavbarContent className={`hidden sm:flex gap-4 ${!path.includes("/sign") ? "" : "invisible"}`} justify="center" >
           <NavbarItem isActive={path==="/" ? true : false}>
-            <Link  href="#" >
+            <Link  href="/" >
               Home
             </Link>
           </NavbarItem>

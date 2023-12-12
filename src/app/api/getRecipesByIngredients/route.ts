@@ -42,7 +42,16 @@ export async function POST(request: NextRequest) {
             },
             {
               $limit: 9
+            },
+            {
+              $project: {
+                recipeTitle: 1,
+                image: 1,
+                summary: 1,
+                cleanIngredients:1,
+                _id:1
             }
+          }
           ]).exec();
 
         console.log(recipes);
@@ -50,13 +59,14 @@ export async function POST(request: NextRequest) {
             const p = { ...item };
             const missingIngs:any[]=[];
             const matchedIngs:any[]=[];
-            ingredients.forEach((ing:string) => {
-                if (item.cleanIngredients.some((recipeIngredient:string) => recipeIngredient.includes(ing))) {
-                  matchedIngs.push(ing);
-                } else {
-                  missingIngs.push(ing);
-                }
-              });
+            item.cleanIngredients.map((ing:string)=>{
+              if (ingredients.some((recipeIngredient:string) => recipeIngredient.includes(ing))) {
+                matchedIngs.push(ing);
+              }else{
+                missingIngs.push(ing)
+              }
+            })
+      
             p.missingIngs=missingIngs;
             p.matchedIngs=matchedIngs;
             return p;
