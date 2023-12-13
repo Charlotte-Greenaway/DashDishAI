@@ -6,7 +6,7 @@ import ResultsIngs from "@/components/ingredient_results/res";
 import axios from "axios";
 
 interface IngredientContProps {
-  user: any[]
+  user: any[];
 }
 
 const IngredientCont: React.FC<IngredientContProps> = ({ user }) => {
@@ -20,30 +20,22 @@ const IngredientCont: React.FC<IngredientContProps> = ({ user }) => {
     const response = await axios.post("./api/setIngs", {
       ingredients: ings,
     });
-
   };
   const dbIngs = async () => {
-    console.log(localStorage.savedIngredients)
-    if(localStorage.savedIngredients){
-      setIngs(localStorage.savedIngredients.split(","));
-      setAnalysing(false)
-    }else{
-      const response = await axios.post("./api/getDbIngs");
-      setIngs(response.data.message);
-      localStorage.savedIngredients = response.data.message;
-      setAnalysing(false)
-    }
-
+    const response = await axios.post("./api/getDbIngs");
+    setIngs(response.data.message);
+    localStorage.savedIngredients = response.data.message;
+    setAnalysing(false);
   };
   useEffect(() => {
-    if(!initialset){
-        dbIngs();
-        setInitial(true);
+    if (!initialset) {
+      dbIngs();
+      setInitial(true);
     }
   }, []);
 
   useEffect(() => {
-    if(initialset){
+    if (initialset) {
       updateIngs();
     }
   }, [ings]);
@@ -61,7 +53,11 @@ const IngredientCont: React.FC<IngredientContProps> = ({ user }) => {
           setRecipeanaly={setRecipeanaly}
         />
       </div>
-      <ResultsIngs recipes={recipes} recipeanaly={recipeanaly} dbSavedRecipes = {user}/>
+      <ResultsIngs
+        recipes={recipes}
+        recipeanaly={recipeanaly}
+        dbSavedRecipes={user}
+      />
     </>
   );
 };
