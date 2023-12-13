@@ -128,6 +128,7 @@ background-position: right center , 17px center , 0px center;
   box-shadow: -2px -3px #0002 inset, 0 0 4px #0003 inset;
   border-radius: 47% 36% 50% 50% / 49% 45% 42% 44%;
   animation: eggRst 1s ease-out infinite;
+  background-color:#ffffff;
 }
 
 @keyframes eggRst {
