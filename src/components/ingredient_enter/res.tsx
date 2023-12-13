@@ -33,14 +33,12 @@ const Results: React.FC<MyComponentProps> = ({ ings, analysing, setIngs ,setReci
       const response = await axios.post("./api/getRecipesByIngredients", {
         ingredients: ings,
       });
-      console.log(response.data.message)
       if(response.data.message[0]!=="No recipes"){
       const rec = Array.from(response.data.message).map((item:any)=>{
         const imgSrc = `data:image/png;base64,${item.image}`;
         item.image=imgSrc;
         return item;
       })
-      console.log(rec)
       setRecipes(rec);
     }else{
       setRecipes(["No recipes"]);

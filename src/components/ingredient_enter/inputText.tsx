@@ -20,6 +20,7 @@ const InputText = ({ setIngs, ings }: any) => {
         } else {
           newIngs = [ingredient];
         }
+        localStorage.savedIngredients=newIngs;
         setIngs(newIngs);
       }
     }

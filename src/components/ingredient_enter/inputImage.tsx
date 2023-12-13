@@ -48,6 +48,7 @@ const InputImage = ({ setIngs, ings, setAnalysing }: any) => {
     const uniqueSet: Set<number> = new Set(newIngs);
     let uniqueArray: number[] = Array.from(uniqueSet);
     setIngs(uniqueArray);
+    localStorage.savedIngredients=uniqueArray;
     setAnalysing(false);
     return newIngs;
   }

@@ -45,7 +45,7 @@ export const updatedSavedIngredients = async (ingredients:string[])=>{
     const result = await UserModel.updateOne({ clerkUserId: loggedInUser?.id }, { $set: { savedIngredients: ingredients } });
 }
 
-export const updatedSavedRecipe = async (recipe:number)=>{
+export const updatedSavedRecipe = async (recipe:string)=>{
     const loggedInUser = await currentUser();
     
     const result = await UserModel.updateOne(
@@ -53,4 +53,14 @@ export const updatedSavedRecipe = async (recipe:number)=>{
         { $addToSet: { savedRecipes: recipe } }
       );
 }
+
+export const removeSavedRecipe = async (recipe: string) => {
+    const loggedInUser = await currentUser();
+  
+    const result = await UserModel.updateOne(
+      { clerkUserId: loggedInUser?.id },
+      { $pull: { savedRecipes: recipe } }
+    );
+  
+  };
 

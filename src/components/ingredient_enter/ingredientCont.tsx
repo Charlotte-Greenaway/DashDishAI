@@ -5,34 +5,43 @@ import { useState, useEffect } from "react";
 import ResultsIngs from "@/components/ingredient_results/res";
 import axios from "axios";
 
-const IngredientCont = () => {
+interface IngredientContProps {
+  user: any[]
+}
+
+const IngredientCont: React.FC<IngredientContProps> = ({ user }) => {
   const [ings, setIngs] = useState([""]);
   const [recipes, setRecipes] = useState([]);
   const [analysing, setAnalysing] = useState(true);
   const [recipeanaly, setRecipeanaly] = useState(false);
   const [initialset, setInitial] = useState(false);
+
   const updateIngs = async () => {
     const response = await axios.post("./api/setIngs", {
       ingredients: ings,
     });
-    if (response.status === 500) {
-      console.log(response);
-    }
+
   };
   const dbIngs = async () => {
-    const response = await axios.post("./api/getDbIngs");
-    console.log(response.data.message)
-    setIngs(response.data.message);
-    setAnalysing(false)
+    console.log(localStorage.savedIngredients)
+    if(localStorage.savedIngredients){
+      setIngs(localStorage.savedIngredients.split(","));
+      setAnalysing(false)
+    }else{
+      const response = await axios.post("./api/getDbIngs");
+      setIngs(response.data.message);
+      localStorage.savedIngredients = response.data.message;
+      setAnalysing(false)
+    }
+
   };
   useEffect(() => {
     if(!initialset){
         dbIngs();
         setInitial(true);
-        console.log("ings set")
-      
     }
   }, []);
+
   useEffect(() => {
     if(initialset){
       updateIngs();
@@ -52,7 +61,7 @@ const IngredientCont = () => {
           setRecipeanaly={setRecipeanaly}
         />
       </div>
-      <ResultsIngs recipes={recipes} recipeanaly={recipeanaly} />
+      <ResultsIngs recipes={recipes} recipeanaly={recipeanaly} dbSavedRecipes = {user}/>
     </>
   );
 };

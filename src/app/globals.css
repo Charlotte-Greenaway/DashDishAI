@@ -37,11 +37,11 @@
 .ings{
   height:fit-content;
 }
-@media(max-width:826px){
+/* @media(max-width:826px){
   .ings{
     width:85%
   }
-}
+} */
 
 @media(min-width:826px){
   .ings{

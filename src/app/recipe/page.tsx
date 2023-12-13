@@ -19,6 +19,7 @@ import {
   useDisclosure,
   Badge,
 } from "@nextui-org/react";
+import { setServers } from "dns";
 
 interface Recipe {
   message: {
@@ -47,7 +48,6 @@ export default function RecipePage() {
       id: id,
       missingIngs: missingIngs,
     });
-    console.log(response.data);
     setRecipe(response.data);
     isLoading(false);
   };
@@ -61,7 +61,6 @@ export default function RecipePage() {
         rating: recipe.message.rating,
         numOfRatings: recipe.message.numOfRatings,
       });
-      console.log(response.data);
       setRated(true);
       onOpen();
     }
@@ -79,11 +78,12 @@ export default function RecipePage() {
         getRecipe(id, "No Ingredients");
       }
     }
+    if(searchParams.get("saved")==="true"){
+      setSavedStatus(true)
+    }
   }, []);
 
-  useEffect(() => {
-    console.log(recipe);
-  }, [recipe]);
+
 
   const saveRecipe = async (id: number) => {
     if (!savedStatus) {
@@ -91,7 +91,11 @@ export default function RecipePage() {
       const res = await axios.post("/api/saveRecipe", {
         id: id,
       });
-      console.log(res);
+    }else{
+      setSavedStatus(false);
+      const res = await axios.post("/api/removeSavedRecipe", {
+        id: id,
+      });
     }
   };
 
