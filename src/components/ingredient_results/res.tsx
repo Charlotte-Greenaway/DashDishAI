@@ -6,21 +6,33 @@ import {
   CardHeader,
   CardFooter,
   Chip,
+  Badge
 } from "@nextui-org/react";
-import { useEffect, useRef } from "react";
-import { FaStar } from "react-icons/fa";
+import { useEffect, useRef, useState} from "react";
+import { FaStar, FaHeart, FaCheck} from "react-icons/fa";
+import axios from 'axios';
 interface MyComponentProps {
   recipes: any[];
   recipeanaly: any;
 }
 const ResultsIngs: React.FC<MyComponentProps> = ({ recipes, recipeanaly }) => {
   const resultsRef: any = useRef(null);
+  const [savedStatus, setSavedStatus] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     if (resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [recipeanaly]);
+
+  const saveRecipe = async(id:number)=>{
+    const res = await axios.post("/api/saveRecipe",{
+      id:id
+    })
+    console.log(res)
+    setSavedStatus((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
   return (
     <>
       {recipeanaly && (
@@ -29,21 +41,34 @@ const ResultsIngs: React.FC<MyComponentProps> = ({ recipes, recipeanaly }) => {
           <span className="loader2">Loading</span>
         </div>
       )}
-      <div className="flex flex-row flex-wrap justify-center mt-10">
+      <div className="flex flex-row flex-wrap justify-center mt-10 max-w-[1150px] mx-auto">
         {recipes.length > 0 &&
           !recipeanaly &&
+          recipes[0]!=="No recipes" &&
           recipes.map((item) => (
             <>
-            <a className="py-4 fitcont mx-auto my-3" href={`/recipe?id=${item._id}&missingIngs=${item.missingIngs}`}>
+            <Badge
+              content={savedStatus[item._id] ? <FaCheck color="white" size={20} className="my-2 mx-1" /> : <FaHeart color="white" size={20} className="my-2 mx-1" />}
+              color="danger"
+              shape="circle"
+              placement="top-right"
+              onClick={()=>saveRecipe(item._id)}
+              className="cursor-pointer"
+              style={{
+                transition: 'color 0.3s, background-color 0.3s',
+              }}
+            >
+            <a className="py-4 fitcont my-3 mx-1" href={`/recipe?id=${item._id}&missingIngs=${item.missingIngs}`}>
+            
               <Card className="py-4 fitcont mx-auto my-3" key={item.recipeId}>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start mx-auto">
-                  <p className="text-tiny uppercase font-bold mx-auto m-w-[300px]">
+                  <p className="text-tiny uppercase font-bold mx-auto max-w-[300px] text-center">
                     {item.recipeTitle}
                   </p>
                   {item.rating > 0 ? (
                     <div className="flex mx-auto my-3">
                       {Array.from({ length: item.rating }).map((_, index) => (
-                        <FaStar key={index} color="gold" size={20} classNm/>
+                        <FaStar key={index} color="gold" size={20} />
                       ))}
                     </div>
                   ) : (
@@ -79,9 +104,18 @@ const ResultsIngs: React.FC<MyComponentProps> = ({ recipes, recipeanaly }) => {
                   </Chip>
                 </CardFooter>
               </Card>
+              
               </a>
+              </Badge>
             </>
           ))}
+          {
+            recipes[0]=="No recipes" &&
+            !recipeanaly &&
+            (
+              <h1 className="text-2xl text-bold">No results</h1>
+            )
+          }
       </div>
     </>
   );

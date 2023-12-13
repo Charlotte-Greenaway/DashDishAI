@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import Head from "next/head";
 import handleFileChange from "@/utils/uploadImage";
+import placeholder from '@/images/placeholder.png';
 import axios from "axios";
 
 const InputImage = ({ setIngs, ings, setAnalysing }: any) => {
@@ -80,7 +81,7 @@ const InputImage = ({ setIngs, ings, setAnalysing }: any) => {
         <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js" />
       </Head>
       <Card
-        className="p-4 space-y-5 mx-auto w-[320px] min-h-[212px]"
+        className="p-4 space-y-5 mx-auto w-[320px] min-h-[212px] lg:w-[500px] lg:min-h-[350px] "
         radius="lg"
       >
         <CardHeader>
@@ -150,6 +151,17 @@ const InputImage = ({ setIngs, ings, setAnalysing }: any) => {
               )}
             </>
           ))}
+          {
+            !image&&(
+              <div className="mx-auto">
+                    <Image
+                      src={placeholder.src}
+                      alt="placeholder"
+                      style={{ margin: "auto", maxHeight: 30 + "dvh" }}
+                    />
+                </div>
+            )
+          }
       </Card>
     </>
   );

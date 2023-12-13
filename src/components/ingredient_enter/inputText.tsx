@@ -29,7 +29,7 @@ const InputText = ({ setIngs, ings }: any) => {
   return (
     <>
       <Card
-        className="p-4 space-y-5 mx-auto w-[320px] min-h-[212px]"
+        className="p-4 space-y-5 mx-auto w-[320px] min-h-[212px] lg:w-[500px] lg:min-h-[350px]"
         radius="lg"
       >
         <CardHeader>

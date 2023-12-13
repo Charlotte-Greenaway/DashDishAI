@@ -2,7 +2,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
-import { FaStar } from "react-icons/fa";
+import {
+  FaStar,
+  FaHeart,
+  FaCheck,
+  FaFacebook,
+  FaEnvelope,
+} from "react-icons/fa";
 import {
   Modal,
   ModalContent,
@@ -10,12 +16,13 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure
+  useDisclosure,
+  Badge,
 } from "@nextui-org/react";
 
 interface Recipe {
   message: {
-    _id: string;
+    _id: number;
     recipeTitle: string;
     summary: string;
     rating: number;
@@ -27,11 +34,12 @@ interface Recipe {
 }
 
 export default function RecipePage() {
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number>(-1);
   const [hasRated, setRated] = useState<boolean>(false);
   const [loading, isLoading] = useState<Boolean>(true);
+  const [savedStatus, setSavedStatus] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
   const getRecipe = async (id: any, missingIngs: any) => {
@@ -65,12 +73,11 @@ export default function RecipePage() {
     } else {
       const id = searchParams.get("id");
       const missingIngs = searchParams.get("missingIngs");
-      if(missingIngs){
+      if (missingIngs) {
         getRecipe(id, missingIngs);
-      }else{
-        getRecipe(id,"No Ingredients");
+      } else {
+        getRecipe(id, "No Ingredients");
       }
-      
     }
   }, []);
 
@@ -78,12 +85,53 @@ export default function RecipePage() {
     console.log(recipe);
   }, [recipe]);
 
+  const saveRecipe = async (id: number) => {
+    if (!savedStatus) {
+      setSavedStatus(true);
+      const res = await axios.post("/api/saveRecipe", {
+        id: id,
+      });
+      console.log(res);
+    }
+  };
+
   return (
     <>
       {recipe && (
-        <>
-          <div className="flex flex-col md:flex-row">
-            <div className="w-screen md:w-1/2 flex px-10 py-10 md:py-0 justify-center flex-col max-h-screen">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col lg:flex-row">
+            <div className="w-screen lg:w-1/2 flex px-10 py-10 lg:py-0 justify-center flex-col max-h-screen">
+              <div className="flex flex-row justify-around my-7">
+                <div
+                  color="danger"
+                  onClick={() => saveRecipe(recipe.message._id)}
+                  className=" w-8 h-8 cursor-pointer bg-red-600 rounded-full flex"
+                  style={{
+                    transition: "color 0.3s, background-color 0.3s",
+                  }}
+                >
+                  {savedStatus ? (
+                    <FaCheck color="white" size={20} className=" m-auto" />
+                  ) : (
+                    <FaHeart color="white" size={20} className="m-auto" />
+                  )}
+                </div>
+                <div className=" flex flex-row">
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=www.dashdish.co.uk?id=${recipe.message._id}`}
+                    target="_blank"
+                  >
+                    <FaFacebook size={35} color="#1877f2" className="mx-3" />
+                  </a>
+                  <a
+                    href={`mailto:?subject=${"Check out this link!"}&body=${encodeURIComponent(
+                      `I thought you might be interested in this link: www.dasdish.co.uk?id=${recipe.message._id}`
+                    )}`}
+                  >
+                    <FaEnvelope size={35} color="#1877f2" className="mx-3" />
+                  </a>
+                </div>
+              </div>
               <h1 className="text-4xl font-bold text-center">
                 {recipe.message.recipeTitle}
               </h1>
@@ -123,25 +171,38 @@ export default function RecipePage() {
               )}
             </div>
             <img
-              className="w-screen md:w-1/2 flex-end max-h-screen"
+              className="w-screen lg:w-1/2 flex-end max-h-screen"
               src={`data:image/png;base64,${Buffer.from(
                 recipe.message.image.data
               ).toString("base64")}`}
             />
           </div>
-          <Modal backdrop="blur" isOpen={isOpen} onClose={onClose} className="m-auto">
+          <Modal
+            backdrop="blur"
+            isOpen={isOpen}
+            onClose={onClose}
+            className="m-auto"
+          >
             <ModalContent>
               {(onClose) => (
                 <>
                   <ModalHeader className="flex flex-col gap-1 text-center">
                     Success
                   </ModalHeader>
-                  <ModalBody >
+                  <ModalBody>
                     <p className="text-center">Thanks for the feedback!</p>
-                    <p className="text-center">To contact us further, please email enquiries@dashdish.co.uk</p>
+                    <p className="text-center">
+                      To contact us further, please email
+                      enquiries@dashdish.co.uk
+                    </p>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="danger" className="mx-auto" variant="light" onPress={onClose}>
+                    <Button
+                      color="danger"
+                      className="mx-auto"
+                      variant="light"
+                      onPress={onClose}
+                    >
                       Close
                     </Button>
                   </ModalFooter>
@@ -149,7 +210,7 @@ export default function RecipePage() {
               )}
             </ModalContent>
           </Modal>
-        </>
+        </div>
       )}
       {loading && (
         <div className="show">

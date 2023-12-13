@@ -43,12 +43,14 @@ export const updatedSavedIngredients = async (ingredients:string[])=>{
     const loggedInUser = await currentUser();
     
     const result = await UserModel.updateOne({ clerkUserId: loggedInUser?.id }, { $set: { savedIngredients: ingredients } });
-    console.log(result);
 }
 
 export const updatedSavedRecipe = async (recipe:number)=>{
     const loggedInUser = await currentUser();
     
-    const result = await UserModel.updateOne({ clerkUserId: loggedInUser?.id },{ $push: { savedRecipes: recipe } } );
-    console.log(result);
+    const result = await UserModel.updateOne(
+        { clerkUserId: loggedInUser?.id },
+        { $addToSet: { savedRecipes: recipe } }
+      );
 }
+
