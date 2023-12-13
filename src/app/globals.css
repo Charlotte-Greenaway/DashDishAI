@@ -118,7 +118,6 @@ background-position: right center , 17px center , 0px center;
   transform: translate(-50% , -20px) rotate3d(75, -2, 3, 78deg);
   width: 55px;
   height: 53px;
-  background: #fff !important;
   background-image:
   radial-gradient(circle 3px , #fff6 90%, transparent 10%),
   radial-gradient(circle 12px , #ffc400 90%, transparent 10%),
